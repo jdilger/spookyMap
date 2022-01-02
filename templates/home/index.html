@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haunted Map :o</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="./static/style.css" />
+    <!-- <script src="./static/index.js"></script> -->
+    <script>
+        let map;
+  
+        function initMap() {
+          map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 11,
+            center: new google.maps.LatLng(2.8, -187.3),
+            mapTypeId: "terrain",
+            styles: [
+                      {
+                          "featureType": "all",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                              {
+                                  "saturation": 36
+                              },
+                              {
+                                  "color": "#93d06b"
+                              },
+                              {
+                                  "lightness": 40
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "all",
+                          "elementType": "labels.text.stroke",
+                          "stylers": [
+                              {
+                                  "visibility": "on"
+                              },
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 16
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "all",
+                          "elementType": "labels.icon",
+                          "stylers": [
+                              {
+                                  "visibility": "off"
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "administrative",
+                          "elementType": "geometry.fill",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 20
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "administrative",
+                          "elementType": "geometry.stroke",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 17
+                              },
+                              {
+                                  "weight": 1.2
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "administrative.province",
+                          "elementType": "geometry.stroke",
+                          "stylers": [
+                              {
+                                  "color": "#675373"
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "landscape",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 20
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "poi",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 21
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "road.highway",
+                          "elementType": "geometry.fill",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 17
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "road.highway",
+                          "elementType": "geometry.stroke",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 29
+                              },
+                              {
+                                  "weight": 0.2
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "road.arterial",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 18
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "road.local",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 16
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "transit",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#000000"
+                              },
+                              {
+                                  "lightness": 19
+                              }
+                          ]
+                      },
+                      {
+                          "featureType": "water",
+                          "elementType": "geometry",
+                          "stylers": [
+                              {
+                                  "color": "#876bc6"
+                              },
+                              {
+                                  "lightness": 17
+                              }
+                          ]
+                      }
+                  ]
+          });
+        }
+        const iconBase = "./static/icons/"
+        const icons = {
+          ghost :{
+            icon : iconBase + 'ghost1.png'
+          }
+        }
+
+           fetch( new Request("api/inthedb").url).then((res)=> {return res.json()})
+            .then(function (data) {
+              // console.log(data.apibb.length)
+              for (let i = 0; i< data.apibb.length;i++){
+                  // console.log(data.apibb[i])
+
+                  const lat = data.apibb[i].latitude
+                  const long = data.apibb[i].longitude
+                  const latLng = new google.maps.LatLng( long, lat);
+                  const infowindow = new google.maps.InfoWindow({
+                      content: data.apibb[i].description,
+                    });
+                  const marker = new google.maps.Marker({
+                    icon : icons.ghost.icon,
+                    position: latLng,
+                    map: map,
+                  });
+                  marker.addListener("click", () => {
+                    infowindow.open(map, marker);
+                  });
+
+                }
+
+
+            })
+
+            
+  
+      </script>
+</head>
+<body>
+    <div class="con">
+        <img src="./static/ghost1.png" alt='too spooky' class="logo">
+        {% if message %}
+        <p class="message">{{message | safe }}</p>
+        {% endif %}
+        <form action="/submit" method="POST">
+        <div class="form-group">
+            <h3>Customer Name</h3>
+            <input
+                type="text"
+                name="customer"
+                placeholder="Name of xyz"
+            />
+        </div>
+        <div class="form-group">
+            <h3>Comments</h3>
+            <textarea
+                name="comments"
+                id=""
+                cols="30"
+                rows="10"
+                placeholder="this is the plac eholder"
+            ></textarea>
+        </div>
+        <input type="submit" value="Submit" class="btn" />
+    </form>
+    </div>
+    <div id='map'></div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrY_-3bBRr4_QEd36vBLX_1QiW_Fx_vFY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+</body>
+</html>

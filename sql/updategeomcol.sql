@@ -1,0 +1,1 @@
+UPDATE landmarks SET geom = ST_SetSRID(ST_MakePoint(latitude, longitude), 4326);

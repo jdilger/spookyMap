@@ -1,0 +1,1 @@
+ALTER TABLE landmarks ADD COLUMN geom geometry(Point, 4326);
