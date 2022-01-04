@@ -3,13 +3,13 @@ from typing import Optional
 import flask
 from flask import Request
 
-from spookyMap.infrastructure import request_dict #, cookie_auth
+from spookyMap.infrastructure import request_dict  # , cookie_auth
 
 
 class ViewModelBase:
     def __init__(self):
         self.request: Request = flask.request
-        self.request_dict = request_dict.create('')
+        self.request_dict = request_dict.create("")
 
         self.error: Optional[str] = None
         # not sure if going to have users yet

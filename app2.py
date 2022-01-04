@@ -3,7 +3,7 @@ import sys
 
 import flask
 
-folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+folder = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, folder)
 import spookyMap.data.db_session as db_session
 
@@ -27,7 +27,7 @@ def configure():
 
 
 def setup_db():
-    db_conn = 'postgresql://postgres:root@localhost/postgres'
+    db_conn = "postgresql://postgres:root@localhost/postgres"
     db_session.global_init(db_conn)
 
 
@@ -37,7 +37,7 @@ def register_blueprints():
     app.register_blueprint(home_views.blueprint)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 else:
     configure()

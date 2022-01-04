@@ -2,12 +2,15 @@
 # from typing import List
 
 import sqlalchemy as sa
+
 # import sqlalchemy.orm as orm
 from spookyMap.data.modelbase import SqlAlchemyBase
+
 # from spookyMap.data.releases import Release
 
+
 class Landmarks(SqlAlchemyBase):
-    __tablename__ = 'landmarks'
+    __tablename__ = "landmarks"
     id = sa.Column(sa.Integer(), primary_key=True)
     city = sa.Column(sa.Text())
     country = sa.Column(sa.Text())
