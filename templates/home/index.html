@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haunted Map :o</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./static/style.css" />
     <!-- <script src="./static/index.js"></script> -->
     <script>
@@ -14,7 +15,7 @@
         function initMap() {
           map = new google.maps.Map(document.getElementById("map"), {
             zoom: 11,
-            center: new google.maps.LatLng(2.8, -187.3),
+            center: new google.maps.LatLng( 30.28, -97.75),
             mapTypeId: "terrain",
             styles: [
                       {
@@ -193,25 +194,35 @@
                       }
                   ]
           });
-        }
-        const iconBase = "./static/icons/"
-        const icons = {
-          ghost :{
-            icon : iconBase + 'ghost1.png'
-          }
-        }
 
-           fetch( new Request("api/inthedb").url).then((res)=> {return res.json()})
+                // https://aiocollective.com/blog/getbounds-in-google-maps-api-v3/
+        //todo: figure out how to pass in obj to make envelop
+        google.maps.event.addListener(map, 'idle', function() {
+            var bounds =  map.getBounds();
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            //do whatever you want with those bounds
+            var lngW=   sw.lng();
+            var latS=   sw.lat();
+            var lngE=   ne.lng();
+            var latN=   ne.lat();
+            var obj=    {
+                lngW: lngW,
+                latS: latS,
+                lngE: lngE,
+                latN: latN
+            };
+            console.log(obj,'in the listener')
+            fetch( new Request(`api/inthedb/${lngW}/${latN}/${lngE}/${latN}`).url).then((res)=> {return res.json()})
             .then(function (data) {
-              // console.log(data.apibb.length)
-              for (let i = 0; i< data.apibb.length;i++){
-                  // console.log(data.apibb[i])
+              console.log(data.length)
+              for (let i = 0; i< data.length;i++){
 
-                  const lat = data.apibb[i].latitude
-                  const long = data.apibb[i].longitude
+                  const lat = data[i].latitude
+                  const long = data[i].longitude
                   const latLng = new google.maps.LatLng( long, lat);
                   const infowindow = new google.maps.InfoWindow({
-                      content: data.apibb[i].description,
+                      content: data[i].description,
                     });
                   const marker = new google.maps.Marker({
                     icon : icons.ghost.icon,
@@ -226,44 +237,37 @@
 
 
             })
+         });
+         
+        }
+
+        const iconBase = "./static/icons/"
+        const icons = {
+          ghost :{
+            icon : iconBase + 'ghost1.png'
+          }
+        }
 
             
   
       </script>
 </head>
 <body>
-    <div class="con">
-        <img src="./static/ghost1.png" alt='too spooky' class="logo">
-        {% if message %}
-        <p class="message">{{message | safe }}</p>
-        {% endif %}
-        <form action="/submit" method="POST">
-        <div class="form-group">
-            <h3>Customer Name</h3>
-            <input
-                type="text"
-                name="customer"
-                placeholder="Name of xyz"
-            />
+    <div id='main_content'>
+        <div class="con" id='title'>
+            <img src="./static/icons/ghost1.png" alt='too spooky' class="logo">
+            <p class="message">SPOOKY MAPS</p>
         </div>
-        <div class="form-group">
-            <h3>Comments</h3>
-            <textarea
-                name="comments"
-                id=""
-                cols="30"
-                rows="10"
-                placeholder="this is the plac eholder"
-            ></textarea>
-        </div>
-        <input type="submit" value="Submit" class="btn" />
-    </form>
+        <div id='map'/>
     </div>
-    <div id='map'></div>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrY_-3bBRr4_QEd36vBLX_1QiW_Fx_vFY&callback=initMap&libraries=&v=weekly"
       async
     ></script>
+    <!-- bootstrap stuff -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

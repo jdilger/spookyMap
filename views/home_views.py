@@ -10,8 +10,9 @@ blueprint = flask.Blueprint("home", __name__, template_folder="templates")
 @blueprint.route("/")
 @response(template_file="home/index.html")
 def index():
-    vm = IndexViewModel()
-    return vm.to_dict()
+    # vm = IndexViewModel()
+    # return vm.to_dict()
+    return {}
 
 
 @blueprint.route("/about")
@@ -22,19 +23,9 @@ def about():
 
 
 # # todo: figure this out
-# @blueprint.route('/api/inthedb',methods=['GET'])
-# @response(template_file='home/index.html')
-# def hello_get():
-#     if request.method == 'GET':
-#         f = Haunts.query.all()
-#         results = [
-#             {
-#                 "description": i.description,
-#                 'latitude': i.latitude,
-#                 'longitude': i.longitude
-#                 # "comments": i.comments
-#             } for i in f]
-
-
-#         return {'count': len(results), "apibb": results}
+@blueprint.route("/api/inthedb/<lngW>/<lngE>/<latS>/<latN>", methods=["GET"])
+def ghosts(lngW, lngE, latN, latS):
+    vm = IndexViewModel(lngW, latS, lngE, latN)
+    # https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
+    return flask.jsonify(vm.ghosts_list)
 
