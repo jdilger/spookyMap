@@ -4,6 +4,16 @@
   height: 640px;
   width: auto;
   /* padding: 2em; */
+  box-shadow: rgba(180, 214, 252, 0.4) -5px 5px 0px 5px,
+    rgba(180, 214, 252, 0.3) -10px 10px 0px 10px,
+    rgba(180, 214, 252, 0.2) -15px 15px 0px 15px,
+    rgba(180, 214, 252, 0.1) -20px 20px 0px 20px,
+    rgba(180, 214, 252, 0.05) -25px 25px 0px 25px,
+    rgba(180, 214, 252, 0.4) 5px -5px 0px 5px,
+    rgba(180, 214, 252, 0.3) 10px -10px 0px 10px,
+    rgba(180, 214, 252, 0.2) 15px -15px 0px 15px,
+    rgba(180, 214, 252, 0.1) 20px -20px 0px 20px,
+    rgba(180, 214, 252, 0.05) 25px -25px 0px 25px;
 }
 #main_content {
   top: 24px;
@@ -13,11 +23,13 @@
   height: auto;
   /* background-color: #2185c5; */
   position: relative;
+  margin: 0 auto;
   /* padding-bottom: 20px; */
 }
 #title {
   font-size: 46px;
   font-weight: 500;
+  color: aliceblue;
 }
 /* Optional: Makes the sample page fill the window. */
 html,
@@ -27,5 +39,5 @@ body {
   padding: 0;
 }
 body {
-  background-color: #59798c;
+  background-color: #3b4144;
 }
