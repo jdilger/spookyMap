@@ -2,6 +2,7 @@ import flask
 
 from spookyMap.infrastructure.view_modifiers import response
 from spookyMap.viewmodels.home.index_viewmodel import IndexViewModel
+from spookyMap.viewmodels.home.random_viewmodel import RandomViewModel
 from spookyMap.viewmodels.shared.viewmodelbase import ViewModelBase
 
 blueprint = flask.Blueprint("home", __name__, template_folder="templates")
@@ -29,3 +30,8 @@ def ghosts(lngW, lngE, latN, latS):
     # https://stackoverflow.com/questions/5022066/how-to-serialize-sqlalchemy-result-to-json
     return flask.jsonify(vm.ghosts_list)
 
+
+@blueprint.route("/api/random", methods=["GET"])
+def random_ghost():
+    vm = RandomViewModel()
+    return flask.jsonify(vm.ghosts_list)

@@ -1,8 +1,6 @@
-from typing import List, Optional
-import sqlalchemy.orm
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import session
 from sqlalchemy import text
+from sqlalchemy.sql import expression
+from sqlalchemy.sql.functions import func
 
 import spookyMap.data.db_session as db_session
 from spookyMap.data.landmarks import Landmarks
@@ -26,3 +24,14 @@ def get_landmarks_from_bounds(lngW, latS, lngE, latN):
         session.close()
 
     return landmarks
+
+
+def get_random_from_db():
+    session = db_session.create_session()
+    try:
+        random_landmark = (
+            session.query(Landmarks).order_by(expression.func.random()).limit(1).first()
+        )
+    finally:
+        session.close()
+    return random_landmark
