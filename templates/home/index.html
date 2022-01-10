@@ -4,17 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haunted Map :o</title>
+    <title>SpookyMap</title>
+    
+    <!-- flavicon stuff -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./static/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./static/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./static/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./static/favicon_io/site.webmanifest">
+
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./static/style.css" />
     <!-- <script src="./static/index.js"></script> -->
     <script>
         let map;
-  
+        let markers =[];
+        let randBtn = document.getElementById("randomButton");
+
         function initMap() {
           map = new google.maps.Map(document.getElementById("map"), {
             zoom: 11,
+            disableDefaultUI: true,
             center: new google.maps.LatLng( 30.28, -97.75), 
             mapTypeId: "terrain",
             styles: [
@@ -213,9 +224,12 @@
                 latN: latN
             };
             console.log(obj,'in the listener')
-            fetch( new Request(`api/inthedb/${lngW}/${latN}/${lngE}/${latN}`).url).then((res)=> {return res.json()})
+            fetch( new Request(`api/inthedb/${lngW}/${lngE}/${latN}/${latS}`).url).then((res)=> {return res.json()})
             .then(function (data) {
               console.log(data.length)
+              deleteMarkers()
+              console.log(data.length)
+              console.log(data)
               for (let i = 0; i< data.length;i++){
 
                   const lat = data[i].latitude
@@ -232,14 +246,32 @@
                   marker.addListener("click", () => {
                     infowindow.open(map, marker);
                   });
-
+                  markers.push(marker);
                 }
 
 
             })
          });
+         // Deletes all markers in the array by removing references to them.
+        function deleteMarkers() {
+            markers = [];
+        }
+         // listen to random button
+         google.maps.event.addDomListener(document.getElementById("randomButton"), "click", () => {
+            console.log("clicking works...")
+            fetch( new Request(`api/random`).url).then((res)=> {return res.json()})
+            .then(function (data) {
+                console.log(data)
+                const lat = data.latitude
+                const long = data.longitude
+                const latLng = new google.maps.LatLng( long, lat);
+                map.setCenter(latLng)
+                map.setZoom(14)
+            });
+          });
          
         }
+
 
         const iconBase = "./static/icons/"
         const icons = {
@@ -248,17 +280,31 @@
           }
         }
 
-            
+
   
       </script>
 </head>
 <body>
     <div id='main_content'>
-        <div class="con" id='title'>
-            <img src="./static/icons/ghost1.png" alt='too spooky' class="logo">
-            <p class="message">SPOOKY MAPS</p>
+        <div class="row">
+            <div class="col-sm-12" id='title'>
+                <p class="message"><img src="./static/icons/ghost1.png" alt='too spooky' class="logo">SPOOKY MAPS</p>
+            </div>
         </div>
-        <div id='map'/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id='map'/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="randomButton">
+                <button id="randomButton" type="button" class="btn btn-danger">Random spooky</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
     </div>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
