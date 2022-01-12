@@ -1,22 +1,9 @@
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
 #map {
-  min-height: 500px;
+  min-height: 800px;
   width: 100%;
-  bottom: 24px;
-
-  /* align-items: center; */
   margin: 0 auto;
-  /* box-shadow: rgba(180, 214, 252, 0.4) -5px 5px 0px 5px,
-    rgba(180, 214, 252, 0.3) -10px 10px 0px 10px,
-    rgba(180, 214, 252, 0.2) -15px 15px 0px 15px,
-    rgba(180, 214, 252, 0.1) -20px 20px 0px 20px,
-    rgba(180, 214, 252, 0.05) -25px 25px 0px 25px,
-    rgba(180, 214, 252, 0.4) 5px -5px 0px 5px,
-    rgba(180, 214, 252, 0.3) 10px -10px 0px 10px,
-    rgba(180, 214, 252, 0.2) 15px -15px 0px 15px,
-    rgba(180, 214, 252, 0.1) 20px -20px 0px 20px,
-    rgba(180, 214, 252, 0.05) 25px -25px 0px 25px; */
   box-shadow: rgba(180, 214, 252, 0.4) 0px 0px 0px 5px,
     rgba(180, 214, 252, 0.3) 0px 0px 0px 10px,
     rgba(180, 214, 252, 0.2) 0px 0px 0px 15px,
@@ -27,11 +14,11 @@
   /* top: 24px;
   left: 50px; */
   width: auto;
-  min-height: 500px;
+  /* min-height: 500px; */
   height: auto;
   margin: 0px auto;
 
-  padding: 1em;
+  /* padding: 1em; */
 }
 #title {
   font-size: 2em;
@@ -50,4 +37,15 @@ body {
 }
 body {
   background-color: #3b4144;
+}
+
+footer {
+  margin-top: 50px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+footer a {
+  color: #2495f2;
 }
