@@ -224,7 +224,7 @@
                     content: data[i].description,
                 });
                 var icon = {url:icons.ghost.icon,
-                scaledSize: new google.maps.Size(50, 50)}
+                scaledSize: new google.maps.Size(60, 60)}
                 const marker = new google.maps.Marker({
                 icon : icon,//icons.ghost.icon,
                 position: latLng,
@@ -233,6 +233,10 @@
                 });
                 marker.addListener("click", () => {
                 infowindow.open(map, marker);
+                
+                });
+                google.maps.event.addListener(map, "click", function(event) {
+                    infowindow.close();
                 });
                 markers.push(marker);
             }
@@ -240,23 +244,25 @@
 
         })
         });
+
         // Deletes all markers in the array by removing references to them.
     function deleteMarkers() {
         markers = [];
     }
-        // listen to random button
-        google.maps.event.addDomListener(document.getElementById("randomButton"), "click", () => {
-        console.log("clicking works...")
-        fetch( new Request(`api/random`).url).then((res)=> {return res.json()})
-        .then(function (data) {
-            console.log(data)
-            const lat = data.latitude
-            const long = data.longitude
-            const latLng = new google.maps.LatLng( long, lat);
-            map.setCenter(latLng)
-            map.setZoom(14)
-        });
-        });
+
+    // listen to random button
+    google.maps.event.addDomListener(document.getElementById("randomButton"), "click", () => {
+    console.log("clicking works...")
+    fetch( new Request(`api/random`).url).then((res)=> {return res.json()})
+    .then(function (data) {
+        console.log(data)
+        const lat = data.latitude
+        const long = data.longitude
+        const latLng = new google.maps.LatLng( long, lat);
+        map.setCenter(latLng)
+        map.setZoom(14)
+    });
+    });
         
     }
 
@@ -278,7 +284,15 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-sm-10" id='title'>
-                <p class="message"></p>
+                <p class="message">Aboutz</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col">
+                <p id='text' class="text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p id='text' class="text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
             <div class="col-1"></div>
         </div>
@@ -286,7 +300,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-5">
                 <div id="randomButton">
-                    <button id="randomButton" type="button" class="btn btn-danger">Random spooky</button>
+                    <button id="randomButton" type="button" class="btn btn-dark">Random spooky</button>
                 </div>
             </div>
             <div class="col-md-6">
